@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <title>keyboard_v2</title>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>   
+</head>
+<body>
+    <script>
+        $(function(){
+            
+            var map = [
+                [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+                [2,1,0,0,2,0,0,2,0,0,0,0,0,0,0,0,2,0,2],
+                [2,2,2,0,2,2,0,2,0,2,2,2,2,0,2,0,0,0,2],
+                [2,0,0,0,4,0,0,0,0,2,0,0,2,2,2,2,2,0,2],
+                [2,0,2,2,2,4,2,0,2,2,2,0,0,0,0,0,2,0,2],
+                [2,0,2,0,5,3,5,0,2,0,0,0,2,2,0,2,2,0,2],
+                [2,0,0,0,2,2,2,2,2,0,2,0,0,2,0,0,0,0,2],
+                [2,2,2,0,2,0,0,0,2,2,2,2,0,2,2,0,2,2,2],
+                [2,0,0,0,0,0,2,0,0,0,0,0,0,2,0,0,0,0,2],
+                [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]]
+            
+            //start
+            var x = 1
+            var y = 1
+
+            function block_wh(weight,height){
+                divline.style.width = weight
+                divline.style.height = height
+            }
+            
+
+            for(let x=0;x<map.length;x++){
+                var divcolumn = document.createElement('div')
+                divcolumn.style.clear = "both"
+                
+                document.body.insertBefore(divcolumn,document.body.lastChild) 
+                
+                for(let y=0;y<map[0].length;y++){
+                    var divline = document.createElement('div')
+                    block_wh("80px","80px")
+
+                    if(map[x][y]==0){
+                        divline.style.background = "url(StateImg/road.jpg)"
+                    }else if(map[x][y]==1){
+                        divline.style.background = "url(StateImg/hero.jpg)"
+                    }else if(map[x][y]==2){
+                        divline.style.background = "url(StateImg/wall.jpg)"
+                    }else if(map[x][y]==3){
+                        divline.style.background = "url(StateImg/boss.jpg)"
+                    }else if(map[x][y]==4){
+                        divline.style.background = "url(StateImg/wall.jpg)"
+                    }else if(map[x][y]==5){
+                        divline.style.background = "url(StateImg/road.jpg)"
+                    }
+                    divline.style.border = "0px solid gray"
+                    divline.style.background.width = "80px"
+                    divline.id = x+''+y
+                    divline.style.float = "left"
+                    
+                    document.body.insertBefore(divline,document.body.lastChild) 
+                }
+            }
+
+            document.onkeydown=function(event){
+                code = event.keyCode
+                switch(code){
+                    case 37:
+                        if(y==1){
+                            break
+                        }else if(map[x][y-1]==2 || map[x][y-1]==5){
+                            break
+                        }
+                        else{
+                            map[x][y-1]=1
+                            map[x][y]=0
+                            y -= 1
+                            reset()
+                        }
+                        break;
+                    case 38:
+                        if(x==1){
+                            break
+                        }else if(map[x-1][y]==2){
+                            break
+                        }
+                        else{
+                            map[x-1][y]=1
+                            map[x][y]=0
+                            x -= 1
+                            reset()
+                        }
+                        break;
+                    case 39:
+                        if(y==map[0].length-1){
+                            break
+                        }else if(map[x][y+1]==2 || map[x][y+1]==5){
+                            break
+                        }
+                        else{
+                            map[x][y+1]=1
+                            map[x][y]=0
+                            y += 1
+                            reset()
+                        }
+                        break;
+                    case 40:
+                        if(x==map.length-1){
+                            break
+                        }else if(map[x+1][y]==2){
+                            break
+                        }
+                        else{
+                            map[x+1][y]=1
+                            map[x][y]=0
+                            x += 1
+                            reset()
+                        }
+                        break;
+                }
+            }
+
+            function reset(){
+                for(let x=0;x<map.length;x++){                                
+                    for(let y=0;y<map[0].length;y++){
+                        if(map[x][y]==1){
+                            $("#"+x+""+y)[0].style.backgroundImage = "url(StateImg/hero.jpg)"
+                        }else if(map[x][y]==0){
+                            $("#"+x+""+y)[0].style.background = "url(StateImg/road.jpg)"
+                        }else if(map[x][y]==-1){
+                            $("#"+x+""+y)[0].style.background = "url(StateImg/road.jpg)"
+                        }
+                    }
+                }
+                if(map[5][5] == 1){
+                    alert("win!")
+                }
+            }
+
+        })   
+    </script>
+</body style="width:1600px">
+</html>
